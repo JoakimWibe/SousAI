@@ -44,7 +44,7 @@ export default function MealGeneratorForm({ mutate, isPending }: MealGeneratorFo
         const payload: MealPlanInput = {
             dietType: formData.diet || '',
             calories: formData.calories || 2000,
-            proteins: formData.calories || 0,
+            proteins: formData.proteins || 0,
             allergies: formData.allergies || '',
             cuisines: formData.cuisines || ''
         }

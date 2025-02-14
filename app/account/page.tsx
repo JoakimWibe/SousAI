@@ -15,6 +15,9 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { Loader } from '@/components/ui/loader';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 async function fetchSubscriptionStatus() {
     const response = await fetch('/api/account/subscription-status');
@@ -89,81 +92,224 @@ export default function AccountPage() {
     }
 
     function handleCancelPlan() {
-        if (confirm('Are you sure you want to cancel your subscription? You will lose access to premium features.')) {
-            cancelPlanMutation();
-        }
+        cancelPlanMutation();
     }
 
     if (!isLoaded) {
-        return <div>Loading...</div>
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <Loader size="lg" className="border-4 text-primary" />
+            </div>
+        )
     }
 
     if (!isSignedIn) {
-        return <div>Please sign in to view your profile.</div>
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <Card className="w-[90%] max-w-md">
+                    <CardHeader className="text-center">
+                        <CardTitle className="text-2xl font-bold">Access Denied</CardTitle>
+                        <CardDescription>Please sign in to view your profile.</CardDescription>
+                    </CardHeader>
+                </Card>
+            </div>
+        )
     }
 
     return (
-        <main className='min-h-screen flex flex-col items-center pt-32 w-full gap-10'>
-            <section>
-                <Avatar>
-                    <AvatarImage src={user?.imageUrl} />
-                    <AvatarFallback>JMW</AvatarFallback>
-                </Avatar>
-
-                <h1>{user?.fullName}</h1>
-                <p>{user?.emailAddresses[0].emailAddress}</p>
-            </section>
-        
-            <section>
-                <h2>Subcription details</h2>
-                {isLoading ? (
-                    <div>Loading subscription details...</div>
-                ): isError ? (
-                    <div>{error?.message}</div>
-                ): subscription ? (
-                    <div>
-                        <h3>Current plan</h3>
-                        {currentPlan ? (
-                            <div>
-                                <p>Plan: {currentPlan.name}</p>
-                                <p>Amount:{currentPlan.currency} {currentPlan.amount}</p>
-                                <p>Status: Active</p>
-                            </div>
-                        ): (
-                            <p>Current plan not found.</p>
-                        )}
+        <main className='min-h-screen flex flex-col items-center pt-32 pb-16 w-full gap-10 px-4'>
+            <section className="text-center space-y-4 max-w-2xl">
+                <h1 className='font-bold text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent'>
+                    Your Account
+                </h1>
+                <div className="flex flex-col items-center gap-3">
+                    <Avatar className="h-24 w-24">
+                        <AvatarImage src={user?.imageUrl} />
+                        <AvatarFallback className="text-xl bg-primary/10 text-primary">
+                            {user?.fullName?.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                    </Avatar>
+                    <div className="text-center">
+                        <h2 className="text-xl font-semibold">{user?.fullName}</h2>
+                        <p className="text-muted-foreground">{user?.emailAddresses[0].emailAddress}</p>
                     </div>
-                ): (
-                    <p>You are not subscribed to any plan.</p>
-                )}
+                </div>
             </section>
-            
-            <section>
-                <h3>Change subscription plan</h3>
-                {currentPlan && (
-                    <>
-                        <Select onValueChange={(value: string) => setSelectedPlan(value)} defaultValue={currentPlan?.interval} disabled={isUpdatePlanPending}>
-                            <SelectTrigger className="w-fit">
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {availablePlans.map((plan, key) => (
-                                    <SelectItem key={key} value={plan.interval}>{plan.name} - NOK{plan.amount} / {plan.interval}</SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
 
-                        <Button onClick={handleUpdatePlan}>Save Change</Button>
-                        {isUpdatePlanPending && (
-                            <div>Updating plan...</div>
+            <section className="w-full max-w-2xl space-y-6">
+                <Card className="w-full">
+                    <CardHeader>
+                        <CardTitle className="text-xl">Subscription Details</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {isLoading ? (
+                            <div className="flex justify-center py-8">
+                                <Loader size="md" className="text-primary" />
+                            </div>
+                        ) : isError ? (
+                            <div className="text-primary text-center py-4">{error?.message}</div>
+                        ) : subscription ? (
+                            <div className="space-y-6">
+                                {currentPlan ? (
+                                    <div className="space-y-4">
+                                        <div className="flex flex-col gap-4">
+                                            <div className="bg-primary/10 text-primary rounded-lg px-4 py-3 flex items-center justify-between">
+                                                <div>
+                                                    <h3 className="font-medium">{currentPlan.name}</h3>
+                                                    <p className="text-sm text-primary/80">Active Plan</p>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="text-2xl font-semibold">{currentPlan.currency} {currentPlan.amount}</p>
+                                                    <p className="text-sm text-primary/80">per {currentPlan.interval}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle className="text-xl">No Active Subscription</CardTitle>
+                                            <CardDescription>
+                                                Subscribe to get access to all premium features
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <Button 
+                                                className="w-full bg-primary hover:bg-primary/90"
+                                                onClick={() => router.push('/subscribe')}
+                                            >
+                                                Get Started
+                                            </Button>
+                                        </CardContent>
+                                    </Card>
+                                )}
+                            </div>
+                        ) : (
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle className="text-xl">No Active Subscription</CardTitle>
+                                    <CardDescription>
+                                        Subscribe to get access to all premium features
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <Button 
+                                        className="w-full bg-primary hover:bg-primary/90"
+                                        onClick={() => router.push('/subscribe')}
+                                    >
+                                        Get Started
+                                    </Button>
+                                </CardContent>
+                            </Card>
                         )}
-                    </>
-                )}
-            </section>
+                    </CardContent>
+                </Card>
 
-            <section>
-                <h3>Cancel subscription</h3>
-                <Button onClick={handleCancelPlan} disabled={isCancelingPlanPending}>{isCancelingPlanPending ? 'Canceling subscription...' : 'Cancel Subscription'}</Button>
+                {currentPlan && (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-xl">Change Plan</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <Select 
+                                onValueChange={(value: string) => setSelectedPlan(value)} 
+                                defaultValue={currentPlan?.interval} 
+                                disabled={isUpdatePlanPending}
+                            >
+                                <SelectTrigger className="w-full">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {availablePlans.map((plan, key) => (
+                                        <SelectItem key={key} value={plan.interval}>
+                                            {plan.name} - {plan.currency}{plan.amount} / {plan.interval}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <Button 
+                                        className="w-full bg-primary hover:bg-primary/90"
+                                        disabled={!selectedPlan || isUpdatePlanPending}
+                                    >
+                                        {isUpdatePlanPending ? (
+                                            <>
+                                                <Loader size="sm" className="mr-2" />
+                                                Updating Plan...
+                                            </>
+                                        ) : (
+                                            'Save Changes'
+                                        )}
+                                    </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Are you sure you want to change your plan?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This will update your subscription and billing will be adjusted accordingly.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction onClick={handleUpdatePlan}>
+                                            Confirm Change
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {currentPlan && (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-xl">Cancel Subscription</CardTitle>
+                            <CardDescription>
+                                Cancel your subscription and lose access to premium features
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <Button 
+                                        variant="outline"
+                                        className="w-full border-primary/20 text-primary hover:bg-background hover:text-primary/70"
+                                        disabled={isCancelingPlanPending}
+                                    >
+                                        {isCancelingPlanPending ? (
+                                            <>
+                                                <Loader size="sm" className="mr-2" />
+                                                Canceling Subscription...
+                                            </>
+                                        ) : (
+                                            'Cancel Subscription'
+                                        )}
+                                    </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Are you sure you want to cancel your subscription?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This will immediately end your subscription and you will lose access to all premium features. This action cannot be undone.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Keep Subscription</AlertDialogCancel>
+                                        <AlertDialogAction 
+                                            onClick={handleCancelPlan}
+                                            className="bg-primary hover:bg-primary/90"
+                                        >
+                                            Yes, Cancel Subscription
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </CardContent>
+                    </Card>
+                )}
             </section>
         </main>
     )

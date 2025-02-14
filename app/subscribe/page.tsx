@@ -74,32 +74,55 @@ export default function SubscribePage() {
     }
 
     return (
-        <main className='min-h-screen flex flex-col items-center pt-32 w-full gap-10'>
-            <section className="text-center space-y-2">
-                <h1 className='font-bold text-2xl md:text-3xl'>Our Pricing Plans</h1>
-                <p>
-                    Select the best plan that fits your needs.
+        <main className='min-h-screen flex flex-col items-center pt-32 w-full gap-10 px-4'>
+            <section className="text-center space-y-4 max-w-2xl">
+                <h1 className='font-bold text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent'>
+                    Choose Your Perfect Plan
+                </h1>
+                <p className='text-lg text-muted-foreground'>
+                    Get personalized meal plans tailored to your preferences and goals
                 </p>
             </section>
 
-            <section className='mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 m-4'>
+            <section className='w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
                 {availablePlans.map((plan, key) => (
-                    <Card className='h-[400px]' key={key}>
-                        <CardHeader>
-                            <div className={`flex items-center gap-2 mb-4 ${!plan.isPopular ? 'invisible' : ''}`}>Popular <Flame /></div>
-                            <CardTitle>{plan.name}</CardTitle>
-                            <h2 className="text-2xl font-bold">{plan.currency}{plan.amount}/{plan.interval}</h2>
+                    <Card 
+                        key={key} 
+                        className={`relative h-[450px] transition-all duration-200 hover:border-primary/50 ${plan.isPopular ? 'border-primary shadow-lg' : ''}`}
+                    >
+                        {plan.isPopular && (
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary px-3 py-1 rounded-full text-primary-foreground text-sm font-medium flex items-center gap-1.5">
+                                Most Popular <Flame className="h-4 w-4" />
+                            </div>
+                        )}
+                        <CardHeader className="text-center pb-2">
+                            <CardTitle className="text-xl mb-4">{plan.name}</CardTitle>
+                            <div className="flex items-end justify-center gap-1">
+                                <span className="text-4xl font-bold">{plan.currency}{plan.amount}</span>
+                                <span className="text-muted-foreground mb-1">/{plan.interval}</span>
+                            </div>
                         </CardHeader>
-                        <CardContent>
-                            <p className='mb-4 min-h-12'>{plan.description}</p>
-                            <ul className="list-disc list-inside space-y-2">
+                        <CardContent className="space-y-6">
+                            <p className='text-muted-foreground text-center'>{plan.description}</p>
+                            <ul className="space-y-3">
                                 {plan.features.map((feature, key) => (
-                                    <li key={key}>{feature}</li>
+                                    <li key={key} className="flex items-start gap-2">
+                                        <span className="bg-primary/10 text-primary rounded-full p-0.5 mt-0.5">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        </span>
+                                        <span>{feature}</span>
+                                    </li>
                                 ))}
                             </ul>
                         </CardContent>
-                        <CardFooter>
-                            <Button onClick={() => handleSubscribe(plan.interval)} disabled={isPending} className='w-full'>{isPending ? 'Please wait...' : `Subscribe ${plan.name}`}</Button>
+                        <CardFooter className="absolute bottom-6 left-6 right-6">
+                            <Button 
+                                onClick={() => handleSubscribe(plan.interval)} 
+                                disabled={isPending} 
+                                className={`w-full ${plan.isPopular ? 'bg-primary hover:bg-primary/90' : ''}`}
+                            >
+                                {isPending ? 'Please wait...' : `Get ${plan.name}`}
+                            </Button>
                         </CardFooter>
                     </Card>
                 ))}

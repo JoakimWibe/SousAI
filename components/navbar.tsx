@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import ModeToggle from './mode-toggle';
-import { CookingPot, MenuIcon} from 'lucide-react';
+import { Utensils, MenuIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import {
     Sheet,
@@ -14,82 +14,163 @@ import {
     SheetTitle,
     SheetTrigger,
   } from "@/components/ui/sheet"
+import { useRef } from 'react';
 
 export default function Navbar() {
     const { isLoaded, isSignedIn, user } = useUser();
     const pathname = usePathname();
+    const sheetTriggerRef = useRef<HTMLButtonElement>(null);
 
-    if (!isLoaded) return <p>Loading...</p>
+    const closeSheet = () => {
+        sheetTriggerRef.current?.click();
+    };
+
+    if (!isLoaded) return null;
 
     return (
-        <nav className='fixed w-full border flex justify-between items-center p-4 md:px-8'>
-            <Link href='/' className='font-bold text-xl flex gap-2 items-center'>
-                <CookingPot size={48} />
-                Meal Planner
+        <nav className='fixed w-full z-50 bg-background/80 backdrop-blur-sm border-b flex justify-between items-center py-3 px-4 md:px-8'>
+            <Link href='/' className='font-bold text-xl flex items-center gap-3 text-foreground hover:opacity-90 transition-opacity'>
+                <Utensils size={24} className="text-primary" />
+                <span className='bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent'>
+                    Meal Planner
+                </span>
             </Link>
 
-            <div className='hidden md:flex items-center gap-4'>
+            <div className='hidden md:flex items-center gap-6'>
                 <SignedIn>
-                    <Link className={`${pathname === '/' ? 'underline' : ''} link`} href='/'>Home</Link>
-                    <Link className={`${pathname === '/meal-plan' ? 'underline' : ''} link`} href='/meal-plan'>Meal Plan</Link>
-                    <Link className={`${pathname === '/account' ? 'underline' : ''} link flex gap-2 items-center`} href='/account'>
-                        My Account
-                        <Avatar>
-                            <AvatarImage src={user?.imageUrl} />
-                            <AvatarFallback>JMW</AvatarFallback>
-                        </Avatar>
-                    </Link>
-                    <SignOutButton>
-                        <Button>Sign out</Button>
-                    </SignOutButton>
+                    <div className='flex items-center gap-6'>
+                        <Link 
+                            className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/' ? 'text-foreground font-medium' : ''}`} 
+                            href='/'
+                        >
+                            Home
+                        </Link>
+                        <Link 
+                            className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/meal-plan' ? 'text-foreground font-medium' : ''}`} 
+                            href='/meal-plan'
+                        >
+                            Meal Plan
+                        </Link>
+                        <Link 
+                            className={`text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 ${pathname === '/account' ? 'text-foreground font-medium' : ''}`} 
+                            href='/account'
+                        >
+                            My Account
+                            <Avatar className="h-8 w-8">
+                                <AvatarImage src={user?.imageUrl} />
+                                <AvatarFallback className="bg-primary/10 text-primary">
+                                    {user?.firstName?.charAt(0) || user?.username?.charAt(0) || 'U'}
+                                </AvatarFallback>
+                            </Avatar>
+                        </Link>
+                        <SignOutButton>
+                            <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                                Sign out
+                            </Button>
+                        </SignOutButton>
+                    </div>
                 </SignedIn>
 
                 <SignedOut>
-                    <Link className={`${pathname === '/' ? 'underline' : ''} link`} href='/'>Home</Link>
-                    <Link className={`${pathname === '/subscribe' ? 'underline' : ''} link`}  href={isSignedIn ? '/subscribe' : '/sign-up'}>Subscribe</Link>
-                    <Link href='/sign-up'>
-                        <Button>Sign up</Button>
-                    </Link>
+                    <div className='flex items-center gap-6'>
+                        <Link 
+                            className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/' ? 'text-foreground font-medium' : ''}`} 
+                            href='/'
+                        >
+                            Home
+                        </Link>
+                        <Link 
+                            className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/subscribe' ? 'text-foreground font-medium' : ''}`}  
+                            href={isSignedIn ? '/subscribe' : '/sign-up'}
+                        >
+                            Subscribe
+                        </Link>
+                        <Link href='/sign-up'>
+                            <Button>Sign up</Button>
+                        </Link>
+                    </div>
                 </SignedOut>
 
-                <ModeToggle  />
+                <ModeToggle />
             </div>
 
             <div className='md:hidden flex items-center gap-4'>
-                <ModeToggle  />
+                <ModeToggle />
                 
                 <Sheet>
                     <SheetTrigger asChild>
-                        <Button variant={'outline'}>
-                            <MenuIcon />
+                        <Button 
+                            ref={sheetTriggerRef}
+                            variant="ghost" 
+                            size="icon" 
+                            className="text-muted-foreground hover:text-foreground"
+                        >
+                            <MenuIcon className="h-5 w-5" />
                         </Button>
                     </SheetTrigger>
 
-                    <SheetContent className='md:hidden'>
-                        <SheetHeader>
-                        <SheetTitle>Meal Planner</SheetTitle>
+                    <SheetContent side="right" className='w-72'>
+                        <SheetHeader className="mb-6">
+                            <SheetTitle className="flex items-center gap-2">
+                                <Utensils size={20} className="text-primary" />
+                                <span className='bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent'>
+                                    Meal Planner
+                                </span>
+                            </SheetTitle>
                         </SheetHeader>
                         <div className='flex flex-col gap-4'>
                             <SignedIn>
-                                <Link className={`${pathname === '/' ? 'underline' : ''} link`} href='/'>Home</Link>
-                                <Link className={`${pathname === '/meal-plan' ? 'underline' : ''} link`} href='/meal-plan'>Meal Plan</Link>
-                                <Link className={`${pathname === '/account' ? 'underline' : ''} link flex gap-2 items-center`} href='/account'>
+                                <Link 
+                                    className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/' ? 'text-foreground font-medium' : ''}`} 
+                                    href='/'
+                                    onClick={closeSheet}
+                                >
+                                    Home
+                                </Link>
+                                <Link 
+                                    className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/meal-plan' ? 'text-foreground font-medium' : ''}`} 
+                                    href='/meal-plan'
+                                    onClick={closeSheet}
+                                >
+                                    Meal Plan
+                                </Link>
+                                <Link 
+                                    className={`text-muted-foreground hover:text-foreground transition-colors flex items-center justify-between ${pathname === '/account' ? 'text-foreground font-medium' : ''}`} 
+                                    href='/account'
+                                    onClick={closeSheet}
+                                >
                                     My Account
-                                    <Avatar>
+                                    <Avatar className="h-8 w-8">
                                         <AvatarImage src={user?.imageUrl} />
-                                        <AvatarFallback>JMW</AvatarFallback>
+                                        <AvatarFallback className="bg-primary/10 text-primary">
+                                            {user?.firstName?.charAt(0) || user?.username?.charAt(0) || 'U'}
+                                        </AvatarFallback>
                                     </Avatar>
                                 </Link>
                                 <SignOutButton>
-                                    <Button>Sign out</Button>
+                                    <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={closeSheet}>
+                                        Sign out
+                                    </Button>
                                 </SignOutButton>
                             </SignedIn>
 
                             <SignedOut>
-                                <Link className={`${pathname === '/' ? 'underline' : ''} link`} href='/'>Home</Link>
-                                <Link className={`${pathname === '/subscribe' ? 'underline' : ''} link`}  href={isSignedIn ? '/subscribe' : '/sign-up'}>Subscribe</Link>
-                                <Link href='/sign-up'>
-                                    <Button>Sign up</Button>
+                                <Link 
+                                    className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/' ? 'text-foreground font-medium' : ''}`} 
+                                    href='/'
+                                    onClick={closeSheet}
+                                >
+                                    Home
+                                </Link>
+                                <Link 
+                                    className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/subscribe' ? 'text-foreground font-medium' : ''}`}  
+                                    href={isSignedIn ? '/subscribe' : '/sign-up'}
+                                    onClick={closeSheet}
+                                >
+                                    Subscribe
+                                </Link>
+                                <Link href='/sign-up' className="mt-2" onClick={closeSheet}>
+                                    <Button className="w-full">Sign up</Button>
                                 </Link>
                             </SignedOut>
                         </div>
