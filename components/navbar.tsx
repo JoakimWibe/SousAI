@@ -40,19 +40,31 @@ export default function Navbar() {
                 <SignedIn>
                     <div className='flex items-center gap-6'>
                         <Link 
-                            className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/' ? 'text-foreground font-medium' : ''}`} 
+                            className={`relative hover:text-foreground transition-colors ${
+                                pathname === '/' 
+                                    ? 'text-primary font-medium after:absolute after:left-0 after:bottom-[-18px] after:w-full after:h-[2px] after:bg-primary' 
+                                    : 'text-muted-foreground'
+                            }`} 
                             href='/'
                         >
                             Home
                         </Link>
                         <Link 
-                            className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/meal-plan' ? 'text-foreground font-medium' : ''}`} 
+                            className={`relative hover:text-foreground transition-colors ${
+                                pathname === '/meal-plan' 
+                                    ? 'text-primary font-medium after:absolute after:left-0 after:bottom-[-18px] after:w-full after:h-[2px] after:bg-primary' 
+                                    : 'text-muted-foreground'
+                            }`} 
                             href='/meal-plan'
                         >
                             Meal Plan
                         </Link>
                         <Link 
-                            className={`text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 ${pathname === '/account' ? 'text-foreground font-medium' : ''}`} 
+                            className={`relative hover:text-foreground transition-colors flex items-center gap-2 ${
+                                pathname === '/account' 
+                                    ? 'text-primary font-medium after:absolute after:left-0 after:bottom-[-18px] after:w-full after:h-[2px] after:bg-primary' 
+                                    : 'text-muted-foreground'
+                            }`} 
                             href='/account'
                         >
                             My Account
@@ -74,13 +86,21 @@ export default function Navbar() {
                 <SignedOut>
                     <div className='flex items-center gap-6'>
                         <Link 
-                            className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/' ? 'text-foreground font-medium' : ''}`} 
+                            className={`relative hover:text-foreground transition-colors ${
+                                pathname === '/' 
+                                    ? 'text-primary font-medium after:absolute after:left-0 after:bottom-[-18px] after:w-full after:h-[2px] after:bg-primary' 
+                                    : 'text-muted-foreground'
+                            }`} 
                             href='/'
                         >
                             Home
                         </Link>
                         <Link 
-                            className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/subscribe' ? 'text-foreground font-medium' : ''}`}  
+                            className={`relative hover:text-foreground transition-colors ${
+                                pathname === '/subscribe' 
+                                    ? 'text-primary font-medium after:absolute after:left-0 after:bottom-[-18px] after:w-full after:h-[2px] after:bg-primary' 
+                                    : 'text-muted-foreground'
+                            }`}  
                             href={isSignedIn ? '/subscribe' : '/sign-up'}
                         >
                             Subscribe
@@ -121,21 +141,33 @@ export default function Navbar() {
                         <div className='flex flex-col gap-4'>
                             <SignedIn>
                                 <Link 
-                                    className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/' ? 'text-foreground font-medium' : ''}`} 
+                                    className={`relative hover:text-foreground transition-colors ${
+                                        pathname === '/' 
+                                            ? 'text-primary font-medium bg-primary/10 -mx-4 px-4 py-2 rounded-md' 
+                                            : 'text-muted-foreground'
+                                    }`} 
                                     href='/'
                                     onClick={closeSheet}
                                 >
                                     Home
                                 </Link>
                                 <Link 
-                                    className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/meal-plan' ? 'text-foreground font-medium' : ''}`} 
+                                    className={`relative hover:text-foreground transition-colors ${
+                                        pathname === '/meal-plan' 
+                                            ? 'text-primary font-medium bg-primary/10 -mx-4 px-4 py-2 rounded-md' 
+                                            : 'text-muted-foreground'
+                                    }`} 
                                     href='/meal-plan'
                                     onClick={closeSheet}
                                 >
                                     Meal Plan
                                 </Link>
                                 <Link 
-                                    className={`text-muted-foreground hover:text-foreground transition-colors flex items-center justify-between ${pathname === '/account' ? 'text-foreground font-medium' : ''}`} 
+                                    className={`relative hover:text-foreground transition-colors flex items-center justify-between ${
+                                        pathname === '/account' 
+                                            ? 'text-primary font-medium bg-primary/10 -mx-4 px-4 py-2 rounded-md' 
+                                            : 'text-muted-foreground'
+                                    }`} 
                                     href='/account'
                                     onClick={closeSheet}
                                 >
@@ -156,14 +188,22 @@ export default function Navbar() {
 
                             <SignedOut>
                                 <Link 
-                                    className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/' ? 'text-foreground font-medium' : ''}`} 
+                                    className={`relative hover:text-foreground transition-colors ${
+                                        pathname === '/' 
+                                            ? 'text-primary font-medium bg-primary/10 -mx-4 px-4 py-2 rounded-md' 
+                                            : 'text-muted-foreground'
+                                    }`} 
                                     href='/'
                                     onClick={closeSheet}
                                 >
                                     Home
                                 </Link>
                                 <Link 
-                                    className={`text-muted-foreground hover:text-foreground transition-colors ${pathname === '/subscribe' ? 'text-foreground font-medium' : ''}`}  
+                                    className={`relative hover:text-foreground transition-colors ${
+                                        pathname === '/subscribe' 
+                                            ? 'text-primary font-medium bg-primary/10 -mx-4 px-4 py-2 rounded-md' 
+                                            : 'text-muted-foreground'
+                                    }`}  
                                     href={isSignedIn ? '/subscribe' : '/sign-up'}
                                     onClick={closeSheet}
                                 >
