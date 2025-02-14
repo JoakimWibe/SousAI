@@ -13,31 +13,43 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { MealPlanInput } from '@/types/mealPlans.td';
 
 const formSchema = z.object({
     diet: z.string().optional(),
     calories: z.coerce.number({message: 'Please provide a number.'}).min(500, {message: 'Please provide a number above 500.'}).max(15000, {message: 'Please provide a realistic goal.'}),
+    proteins: z.coerce.number({message: 'Please provide a number.'}).optional(),
     allergies: z.string().optional(),
     cuisines:  z.string().optional(),
-    days: z.coerce.number({message: 'Please provide a number.'}).min(1, {message: 'Minimum days is 1 day.'}).max(31, {message: 'Maximum days is 31 days.'})
   })  
 
-export default function MealGeneratorForm() {
+interface MealGeneratorFormProps {
+    mutate: (data: MealPlanInput) => void;
+    isPending: boolean;
+}
+
+export default function MealGeneratorForm({ mutate, isPending }: MealGeneratorFormProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             diet: '',
             calories: 2000,
+            proteins: 0,
             allergies: '',
             cuisines: '',
-            days: 1
         }
       });
 
     function onSubmit(formData: z.infer<typeof formSchema>) {
-        console.log(formData)
+        const payload: MealPlanInput = {
+            dietType: formData.diet || '',
+            calories: formData.calories || 2000,
+            proteins: formData.calories || 0,
+            allergies: formData.allergies || '',
+            cuisines: formData.cuisines || ''
+        }
 
-        
+        mutate(payload)
     }  
 
     return (
@@ -73,6 +85,20 @@ export default function MealGeneratorForm() {
 
                     <FormField
                         control={form.control}
+                        name="proteins"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Daily Protein Goal (optional)</FormLabel>
+                            <FormControl>
+                                <Input placeholder='e.g. 40' {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
                         name="allergies"
                         render={({ field }) => (
                         <FormItem>
@@ -99,21 +125,7 @@ export default function MealGeneratorForm() {
                         )}
                     />
 
-                    <FormField
-                        control={form.control}
-                        name="days"
-                        render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Days (required)</FormLabel>
-                            <FormControl>
-                                <Input placeholder='e.g. 1, 7, 30' {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                        )}
-                    />   
-
-                <Button className='w-full' type="submit">Generate Meal Plan</Button>
+                <Button disabled={isPending} className='w-full' type="submit">{isPending ? 'Generating...' : 'Generate Meal Plan'}</Button>
             </form>
         </Form>
     )

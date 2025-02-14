@@ -32,7 +32,7 @@ export default function Navbar() {
                 <SignedIn>
                     <Link className={`${pathname === '/' ? 'underline' : ''} link`} href='/'>Home</Link>
                     <Link className={`${pathname === '/meal-plan' ? 'underline' : ''} link`} href='/meal-plan'>Meal Plan</Link>
-                    <Link className={`${pathname === '/my-account' ? 'underline' : ''} link flex gap-2 items-center`} href='/my-account'>
+                    <Link className={`${pathname === '/account' ? 'underline' : ''} link flex gap-2 items-center`} href='/account'>
                         My Account
                         <Avatar>
                             <AvatarImage src={user?.imageUrl} />
@@ -73,7 +73,7 @@ export default function Navbar() {
                             <SignedIn>
                                 <Link className={`${pathname === '/' ? 'underline' : ''} link`} href='/'>Home</Link>
                                 <Link className={`${pathname === '/meal-plan' ? 'underline' : ''} link`} href='/meal-plan'>Meal Plan</Link>
-                                <Link className={`${pathname === '/my-account' ? 'underline' : ''} link flex gap-2 items-center`} href='/my-account'>
+                                <Link className={`${pathname === '/account' ? 'underline' : ''} link flex gap-2 items-center`} href='/account'>
                                     My Account
                                     <Avatar>
                                         <AvatarImage src={user?.imageUrl} />
