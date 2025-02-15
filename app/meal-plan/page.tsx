@@ -44,10 +44,15 @@ export default function MealPlanPage() {
                         </div>
                     </div>
 
-                    <div className="p-4 border rounded-lg bg-muted/50">
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                            <span className="font-medium text-primary">Disclaimer:</span> The meal plans generated are suggestions based on the information provided. Always consult with a healthcare professional or registered dietitian before starting any new diet plan, especially if you have specific health conditions, allergies, or dietary restrictions. Calorie and nutritional calculations are approximate.
-                        </p>
+                    <div className="p-4 border rounded-lg bg-card shadow-sm">
+                        <div className="flex items-start gap-3">
+                            <div className="min-w-2 h-full py-1">
+                                <div className="w-1 h-full bg-primary/50 rounded-full" />
+                            </div>
+                            <p className="text-sm text-card-foreground leading-relaxed">
+                                <span className="font-semibold text-primary">Disclaimer:</span> The meal plans generated are suggestions based on the information provided. Always consult with a healthcare professional or registered dietitian before starting any new diet plan, especially if you have specific health conditions, allergies, or dietary restrictions. Calorie and nutritional calculations are approximate.
+                            </p>
+                        </div>
                     </div>
 
                     <div className="grid lg:grid-cols-[400px,1fr] gap-8">

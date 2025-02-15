@@ -18,6 +18,7 @@ import { MealPlanInput } from '@/types/mealPlans.td';
 const formSchema = z.object({
     diet: z.string().optional(),
     calories: z.coerce.number({message: 'Please provide a number.'}).min(500, {message: 'Please provide a number above 500.'}).max(15000, {message: 'Please provide a realistic goal.'}),
+    persons: z.coerce.number({message: 'Please provide a number.'}).min(1, {message: 'There must be at least 1 person.'}).max(1000, {message: 'Please provide a realistic number of persons.'}),
     proteins: z.coerce.number({message: 'Please provide a number.'}).optional(),
     allergies: z.string().optional(),
     cuisines:  z.string().optional(),
@@ -34,7 +35,8 @@ export default function MealGeneratorForm({ mutate, isPending }: MealGeneratorFo
         defaultValues: {
             diet: '',
             calories: 2000,
-            proteins: 0,
+            persons: 1,
+            proteins: 50,
             allergies: '',
             cuisines: '',
         }
@@ -44,9 +46,10 @@ export default function MealGeneratorForm({ mutate, isPending }: MealGeneratorFo
         const payload: MealPlanInput = {
             dietType: formData.diet || '',
             calories: formData.calories || 2000,
-            proteins: formData.proteins || 0,
+            persons: formData.persons || 1,
+            proteins: formData.proteins || 50,
             allergies: formData.allergies || '',
-            cuisines: formData.cuisines || ''
+            cuisines: formData.cuisines || '',
         }
 
         mutate(payload)
@@ -77,6 +80,20 @@ export default function MealGeneratorForm({ mutate, isPending }: MealGeneratorFo
                             <FormLabel>Daily Calorie Goal (required)</FormLabel>
                             <FormControl>
                                 <Input placeholder='e.g. 2000' {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="persons"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Number of People (required)</FormLabel>
+                            <FormControl>
+                                <Input placeholder='e.g. 2' {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

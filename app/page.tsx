@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Check, Cog, UserPlus } from 'lucide-react';
+import { Check, Cog, UserPlus, ChefHat } from 'lucide-react';
 import Link from 'next/link';
 
 const steps = [
@@ -29,6 +29,9 @@ export default function HomePage() {
       <section className='relative w-full max-w-5xl'>
         <div className='absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 blur-3xl -z-10 rounded-[inherit]' />
         <div className='border bg-card/50 backdrop-blur-sm h-[350px] rounded-2xl flex flex-col items-center justify-center text-center gap-6 px-4'>
+          <div className="flex items-center gap-4 mb-2">
+            <ChefHat size={40} className="text-primary" />
+          </div>
           <h1 className='font-bold text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent'>
             Your Personal AI Chef & Nutritionist
           </h1>  

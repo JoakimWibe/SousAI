@@ -1,6 +1,7 @@
 export interface MealPlanInput {
     dietType: string;
     calories: number;
+    persons: number;
     proteins: number;
     allergies: string;
     cuisines: string;

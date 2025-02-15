@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import ModeToggle from './mode-toggle';
-import { Utensils, MenuIcon } from 'lucide-react';
+import { MenuIcon, ChefHat } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import {
     Sheet,
@@ -30,9 +30,9 @@ export default function Navbar() {
     return (
         <nav className='fixed w-full z-50 bg-background/80 backdrop-blur-sm border-b flex justify-between items-center py-3 px-4 md:px-8'>
             <Link href='/' className='font-bold text-xl flex items-center gap-3 text-foreground hover:opacity-90 transition-opacity'>
-                <Utensils size={24} className="text-primary" />
+                <ChefHat size={24} className="text-primary" />
                 <span className='bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent'>
-                    Meal Planner
+                    Sous.ai
                 </span>
             </Link>
 
@@ -57,7 +57,7 @@ export default function Navbar() {
                             }`} 
                             href='/meal-plan'
                         >
-                            Meal Plan
+                            Meal Planner
                         </Link>
                         <Link 
                             className={`relative hover:text-foreground transition-colors flex items-center gap-2 ${
@@ -76,8 +76,8 @@ export default function Navbar() {
                             </Avatar>
                         </Link>
                         <SignOutButton>
-                            <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
-                                Sign out
+                            <Button variant="ghost" className="text-muted-foreground hover:text-white">
+                                Sign Out
                             </Button>
                         </SignOutButton>
                     </div>
@@ -106,7 +106,9 @@ export default function Navbar() {
                             Subscribe
                         </Link>
                         <Link href='/sign-up'>
-                            <Button>Sign up</Button>
+                            <Button variant="ghost" className="text-muted-foreground hover:text-white">
+                                Sign Up
+                            </Button>
                         </Link>
                     </div>
                 </SignedOut>
@@ -132,9 +134,9 @@ export default function Navbar() {
                     <SheetContent side="right" className='w-72'>
                         <SheetHeader className="mb-6">
                             <SheetTitle className="flex items-center gap-2">
-                                <Utensils size={20} className="text-primary" />
+                                <ChefHat size={20} className="text-primary" />
                                 <span className='bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent'>
-                                    Meal Planner
+                                    Sous.ai
                                 </span>
                             </SheetTitle>
                         </SheetHeader>
@@ -160,7 +162,7 @@ export default function Navbar() {
                                     href='/meal-plan'
                                     onClick={closeSheet}
                                 >
-                                    Meal Plan
+                                    Meal Planner
                                 </Link>
                                 <Link 
                                     className={`relative hover:text-foreground transition-colors flex items-center justify-between ${
@@ -180,8 +182,8 @@ export default function Navbar() {
                                     </Avatar>
                                 </Link>
                                 <SignOutButton>
-                                    <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground" onClick={closeSheet}>
-                                        Sign out
+                                    <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-white" onClick={closeSheet}>
+                                        Sign Out
                                     </Button>
                                 </SignOutButton>
                             </SignedIn>
@@ -209,8 +211,10 @@ export default function Navbar() {
                                 >
                                     Subscribe
                                 </Link>
-                                <Link href='/sign-up' className="mt-2" onClick={closeSheet}>
-                                    <Button className="w-full">Sign up</Button>
+                                <Link href='/sign-up' onClick={closeSheet}>
+                                    <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-white">
+                                        Sign Up
+                                    </Button>
                                 </Link>
                             </SignedOut>
                         </div>

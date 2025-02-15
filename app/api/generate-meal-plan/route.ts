@@ -10,9 +10,9 @@ interface DailyMealPlan {
 
 export async function POST(request:NextRequest) {
     try {
-        const {dietType, calories, allergies, cuisines, proteins} = await request.json();
+        const {dietType, calories, persons, proteins, allergies, cuisines} = await request.json();
 
-        const prompt = getPrompt(dietType, calories, proteins, allergies, cuisines);
+        const prompt = getPrompt(dietType, calories, persons, proteins, allergies, cuisines);
 
         console.log(prompt)
 
