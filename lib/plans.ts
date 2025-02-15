@@ -11,7 +11,7 @@ export interface Plan {
 export const availablePlans: Plan[] = [
     {
         name: 'Weekly Plan',
-        amount: 99,
+        amount: 49,
         currency: 'NOK',
         interval: 'week',
         description: 'Perfect if you want to try the service before comitting longer.',
@@ -23,7 +23,7 @@ export const availablePlans: Plan[] = [
     },
     {
         name: 'Monthly Plan',
-        amount: 399,
+        amount: 89,
         currency: 'NOK',
         interval: 'month',
         description: 'Perfect for ongoing, month-to-month meal planning and features.',
@@ -36,7 +36,7 @@ export const availablePlans: Plan[] = [
     },
     {
         name: 'Yearly Plan',
-        amount: 2999,
+        amount: 999,
         currency: 'NOK',
         interval: 'year',
         description: 'Best value for those comitted to improving their diet long-term',
