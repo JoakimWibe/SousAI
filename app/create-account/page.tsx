@@ -29,7 +29,7 @@ export default function CreateAccount() {
     const { mutate, isPending } = useMutation<ApiResponse, Error>({
         mutationFn: createAccountRequest,
         onSuccess: () => {
-            router.push('/subscribe')
+            router.push('/meal-planner')
         },
         onError: (err) => {
             console.log(err);

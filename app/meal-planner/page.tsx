@@ -17,7 +17,7 @@ async function generateMealPlan(payload: MealPlanInput) {
     return response.json();
 }
 
-export default function MealPlanPage() {
+export default function MealPlannerPage() {
     const { mutate, isPending, data, isSuccess } = useMutation<MealPlanResponse, Error, MealPlanInput>({
         mutationFn: generateMealPlan
     })

@@ -17,3 +17,57 @@ model Account {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model MealPlan {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  calories  Int
+  proteins  Int?
+  persons   Int
+  dietType  String?
+  allergies String?
+  cuisines  String?
+  days      Day[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Day {
+  id         String    @id @default(uuid())
+  dayOfWeek  String    
+  mealPlanId String
+  mealPlan   MealPlan  @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  breakfast  Meal      @relation("breakfast", fields: [breakfastId], references: [id])
+  lunch      Meal      @relation("lunch", fields: [lunchId], references: [id])
+  dinner     Meal      @relation("dinner", fields: [dinnerId], references: [id])
+  breakfastId String
+  lunchId     String
+  dinnerId    String
+  shoppingList ShoppingItem[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([mealPlanId, dayOfWeek])
+}
+
+model Meal {
+  id          String   @id @default(uuid())
+  name        String
+  calories    Int
+  protein     Int
+  breakfastFor Day[]   @relation("breakfast")
+  lunchFor     Day[]   @relation("lunch")
+  dinnerFor    Day[]   @relation("dinner")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ShoppingItem {
+  id      String   @id @default(uuid())
+  item    String
+  dayId   String
+  day     Day      @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

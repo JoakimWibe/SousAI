@@ -51,13 +51,23 @@ export default function Navbar() {
                         </Link>
                         <Link 
                             className={`relative hover:text-foreground transition-colors ${
-                                pathname === '/meal-plan' 
+                                pathname === '/meal-planner' 
                                     ? 'text-primary font-medium after:absolute after:left-0 after:bottom-[-18px] after:w-full after:h-[2px] after:bg-primary' 
                                     : 'text-muted-foreground'
                             }`} 
-                            href='/meal-plan'
+                            href='/meal-planner'
                         >
                             Meal Planner
+                        </Link>
+                        <Link 
+                            className={`relative hover:text-foreground transition-colors ${
+                                pathname === '/meal-planner/saved' 
+                                    ? 'text-primary font-medium after:absolute after:left-0 after:bottom-[-18px] after:w-full after:h-[2px] after:bg-primary' 
+                                    : 'text-muted-foreground'
+                            }`} 
+                            href='/meal-planner/saved'
+                        >
+                            Saved Plans
                         </Link>
                         <Link 
                             className={`relative hover:text-foreground transition-colors flex items-center gap-2 ${
@@ -155,14 +165,25 @@ export default function Navbar() {
                                 </Link>
                                 <Link 
                                     className={`relative hover:text-foreground transition-colors ${
-                                        pathname === '/meal-plan' 
+                                        pathname === '/meal-planner' 
                                             ? 'text-primary font-medium bg-primary/10 -mx-4 px-4 py-2 rounded-md' 
                                             : 'text-muted-foreground'
                                     }`} 
-                                    href='/meal-plan'
+                                    href='/meal-planner'
                                     onClick={closeSheet}
                                 >
                                     Meal Planner
+                                </Link>
+                                <Link 
+                                    className={`relative hover:text-foreground transition-colors ${
+                                        pathname === '/meal-planner/saved' 
+                                            ? 'text-primary font-medium bg-primary/10 -mx-4 px-4 py-2 rounded-md' 
+                                            : 'text-muted-foreground'
+                                    }`} 
+                                    href='/meal-planner/saved'
+                                    onClick={closeSheet}
+                                >
+                                    Saved Plans
                                 </Link>
                                 <Link 
                                     className={`relative hover:text-foreground transition-colors flex items-center justify-between ${

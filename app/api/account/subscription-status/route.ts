@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
     try {
         const clerkUser = await currentUser();
+
         if (!clerkUser?.id) return NextResponse.json({error: 'Unauthorized'}, {status: 401});
 
         const account = await prisma.account.findUnique({
