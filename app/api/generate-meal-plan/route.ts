@@ -32,8 +32,6 @@ export async function POST(request:NextRequest) {
 
         let parsedMealPlan: {[day: string]: DailyMealPlan}
 
-        console.log(aiContent)
-
         try {
             parsedMealPlan = JSON.parse(aiContent)
         } catch (parseError) {

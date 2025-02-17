@@ -78,3 +78,26 @@ export async function POST(req: Request) {
         return new NextResponse("Internal Error", { status: 500 });
     }
 }
+
+export async function GET() {
+    try {
+        const clerkUser = await currentUser();
+        if (!clerkUser?.id) return NextResponse.json({error: 'Unauthorized'}, {status: 401});
+
+        const account = await prisma.account.findUnique({
+            where: { userId: clerkUser.id },
+            select: { id: true }
+        });
+
+        if (!account) return NextResponse.json({error: 'No account found.'}, {status: 404});
+
+        const mealPlans = await prisma.mealPlan.findMany({
+            where: { userId: clerkUser.id },
+        })
+        
+        return NextResponse.json(mealPlans);
+    } catch (error) {
+        console.error("[MEAL_PLANS_GET]", error);
+        return new NextResponse("Internal Error", { status: 500 });
+    }
+}

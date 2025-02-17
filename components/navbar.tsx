@@ -135,7 +135,7 @@ export default function Navbar() {
                             ref={sheetTriggerRef}
                             variant="ghost" 
                             size="icon" 
-                            className="text-muted-foreground hover:text-foreground"
+                            className="text-muted-foreground hover:text-white"
                         >
                             <MenuIcon className="h-5 w-5" />
                         </Button>
